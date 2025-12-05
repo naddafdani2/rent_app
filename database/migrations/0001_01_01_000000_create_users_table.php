@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('personal_photo');
             $table->string('id_photo');
             $table->date('birth_date');
-            $table->string('phone',10);
+            $table->string('phone',10)->unique();
             $table->boolean('is_approved')->default(false);
             $table->rememberToken();
             $table->timestamps();
