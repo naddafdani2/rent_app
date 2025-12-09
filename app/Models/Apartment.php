@@ -30,4 +30,9 @@ class Apartment extends Model
     {
         return $this->hasMany(Apt_image::class, 'apartment_id');
     }
+
+  public function favoritedBy() 
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'apartment_id', 'user_id');
+    }
 }

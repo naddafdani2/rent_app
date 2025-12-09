@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Apartment;
 
 class User extends Authenticatable
 {
@@ -50,6 +51,10 @@ class User extends Authenticatable
         return $this->hasMany(Apartment::class, 'owner_id');
     }
     
+public function favorites()
+{
+    return $this->belongsToMany(Apartment::class, 'favorites', 'user_id', 'apartment_id');
+}
     protected function casts(): array
     {
         return [
