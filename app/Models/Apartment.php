@@ -22,6 +22,14 @@ class Apartment extends Model
     ];
 
 
+    protected static function booted()
+    {
+        
+        static::deleting(function ($apartment) {
+            $apartment->images()->delete(); 
+        });
+    }
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');
@@ -34,5 +42,11 @@ class Apartment extends Model
   public function favoritedBy() 
     {
         return $this->belongsToMany(User::class, 'favorites', 'apartment_id', 'user_id');
+    }
+
+
+    public function ratingBy()
+    {
+        return $this->belongsToMany(User::class, 'ratings', 'apartment_id', 'user_id')->withPivot('rate', 'comment');
     }
 }

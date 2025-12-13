@@ -57,6 +57,16 @@ public function favorites()
 {
     return $this->belongsToMany(Apartment::class, 'favorites', 'user_id', 'apartment_id');
 }
+
+public function ratings()
+{
+    return $this->belongsToMany(Apartment::class, 'ratings', 'user_id', 'apartment_id')
+    ->withPivot('rating', 'comment', 'created_at');
+}
+
+
+
+
     protected function casts(): array
     {
         return [

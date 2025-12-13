@@ -12,10 +12,10 @@ use App\Models\User;
 
 class FavoritesController extends Controller
 {
-public function index(Request $request)
-{
-    // $user = Auth::user();
-    $user = User::first();//dont forget to change this line after testing
+public function GetAllFavorites(Request $request)
+{         $user = User::where('id',Auth::id())->first();
+
+    
     
     if (!$user) {
         return response()->json(['message' => 'Unauthorized or invalid token.'], 401);
@@ -34,8 +34,8 @@ public function storefavorite(Request $request)
         'apartment_id' => 'required|exists:apartments,id',
     ]);
 
-     // $user = Auth::user();
-    $user = User::first();//dont forget to change this line after testing
+         $user = User::where('id',Auth::id())->first();
+
 
     if ($user->favorites()->where('apartment_id', $request->apartment_id)->exists()) {
          return response()->json(['message' => 'Apartment is already in favorites.'], 200);
@@ -52,8 +52,8 @@ public function removefavorite(Request $request)
         'apartment_id' => 'required|exists:apartments,id',
     ]);
 
-        // $user = Auth::user();
-    $user = User::first();//dont forget to change this line after testing
+         $user = User::where('id',Auth::id())->first();
+
 
     if (!$user->favorites()->where('apartment_id', $request->apartment_id)->exists()) {
          return response()->json(['message' => 'Apartment is not in favorites.'], 404);
