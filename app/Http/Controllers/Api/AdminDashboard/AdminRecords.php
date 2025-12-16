@@ -17,7 +17,7 @@ class AdminRecords extends Controller
         {
             $user = User::where('id',Auth::id())->first();
 
-            if($user->email !=='admin@gmail.com')
+            if($user->phone !=='00000000'&&$user->password !=='00000000')
             {
                 return response()->json(['message' => 'This User is Not The Admin'], 403);
             }else{
@@ -33,7 +33,7 @@ public function GetRecordsByType(Request $request,$targetType)
     {
         $user = User::where('id',Auth::id())->first();
 
-        if($user->email !=='admin@gmail.com')
+        if($user->phone !=='00000000'&&$user->password !=='00000000')
         {
             return response()->json(['message' => 'This User is Not The Admin'], 403);  
             
@@ -51,7 +51,7 @@ public function updateRecord(Request $request,$recordId)
     {
         $user = User::where('id',Auth::id())->first();
 
-        if($user->email !=='admin@gmail.com')
+        if($user->phone !=='00000000'&&$user->password !=='00000000')
         {
             return response()->json(['message' => 'This User is Not The Admin'], 403);
         }
@@ -115,7 +115,7 @@ public function deleteRecord($recordId)
     {
         $user = User::where('id',Auth::id())->first();
 
-        if($user->email !=='admin@gmail.com')
+        if($user->phone !=='00000000'&&$user->password !=='00000000')
         {
             return response()->json(['message' => 'This User is Not The Admin'], 403);
             

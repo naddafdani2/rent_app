@@ -21,11 +21,11 @@ class AdminController extends Controller
             'reason'=>'nullable|string',
         ]);
 
-     if(Auth::chek())
+     if(Auth::check())
         {
             $user = User::where('id',Auth::id())->first();
 
-            if($user->email !=='admin@gmail.com'){
+            if($user->phone !=='00000000'&&$user->password !=='00000000'){
                 return response()->json(['message' => 'This User is Not The Admin'], 403);
             }else{
                  $apartment = Apartment::findOrFail($apartmentId);
@@ -42,6 +42,8 @@ class AdminController extends Controller
         'target_id'   => $apartmentId, 
         'action'      => $request->action, 
         'reason'      => $request->reason,
+        'created_at'  => now(),
+        'updated_at'  => now(),
     ]);
     
     return response()->json([
@@ -65,11 +67,11 @@ class AdminController extends Controller
             'reason'=>'nullable|string',
         ]);
 
-     if(Auth::chek())
+     if(Auth::check())
         {
             $user = User::where('id',Auth::id())->first();
 
-            if($user->email !=='admin@gmail.com')
+            if($user->phone !=='00000000'&&$user->password !=='00000000')
             {
                 return response()->json(['message' => 'This User is Not The Admin'], 403);
             }else{
