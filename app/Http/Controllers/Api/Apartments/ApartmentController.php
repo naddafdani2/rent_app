@@ -195,16 +195,7 @@ public function update(Request $request, $id)
 
     // delete apartment
     /////////////////////////////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD
-  public function destroy($id)
-{
-    $apartment = Apartment::findOrFail($id);
-    
-    if ($apartment->owner_id !== Auth::id()) {
-        return response()->json([
-            'message' => 'Unauthorized action. You do not own this apartment.',
-        ], 403);
-=======
+
     public function destroy($id)
     {
          $user = Auth::user();
@@ -222,8 +213,7 @@ public function update(Request $request, $id)
         $apartment->delete();
 
         return response()->json(['The Apartment Deleted Successfully', 200]);
->>>>>>> build-Apartments
-    }
+
     
     $imagesToDelete = $apartment->images()->get(); 
     
