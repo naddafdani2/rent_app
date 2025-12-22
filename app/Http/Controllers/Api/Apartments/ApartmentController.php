@@ -41,6 +41,14 @@ class ApartmentController extends Controller
 
    public function store(Request $request)
     {
+
+        $user = Auth::user();
+        if (!$user->is_approved) {
+            return response()->json([
+                'message' => 'Your account is not approved to add apartments.',
+            ], 403);
+        }
+        
         $request->validate([
             
             'title' => 'required|string|max:255',
@@ -93,7 +101,12 @@ class ApartmentController extends Controller
     /////////////////////////////////////////////////////////////////////////////////////////////////
 public function update(Request $request, $id)
     {
-        
+         $user = Auth::user();
+        if (!$user->is_approved) {
+            return response()->json([
+                'message' => 'Your account is not approved to add apartments.',
+            ], 403);
+        }
         $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
@@ -182,6 +195,7 @@ public function update(Request $request, $id)
 
     // delete apartment
     /////////////////////////////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
   public function destroy($id)
 {
     $apartment = Apartment::findOrFail($id);
@@ -190,6 +204,25 @@ public function update(Request $request, $id)
         return response()->json([
             'message' => 'Unauthorized action. You do not own this apartment.',
         ], 403);
+=======
+    public function destroy($id)
+    {
+         $user = Auth::user();
+        if (!$user->is_approved) {
+            return response()->json([
+                'message' => 'Your account is not approved to add apartments.',
+            ], 403);
+        }
+        $apartment = Apartment::findOrFail($id);
+        if ($apartment->owner_id !== Auth::id()) {
+            return response()->json([
+                'message' => 'Unauthorized action. You do not own this apartment.',
+            ], 403);
+        }
+        $apartment->delete();
+
+        return response()->json(['The Apartment Deleted Successfully', 200]);
+>>>>>>> build-Apartments
     }
     
     $imagesToDelete = $apartment->images()->get(); 
