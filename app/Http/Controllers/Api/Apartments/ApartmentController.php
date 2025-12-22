@@ -205,8 +205,25 @@ public function update(Request $request, $id)
         $apartment->delete();
 
         return response()->json(['The Apartment Deleted Successfully', 200]);
-    }
 
+    
+    
+    $imagesToDelete = $apartment->images()->get(); 
+    
+    foreach ($imagesToDelete as $image) {
+        
+        if (Storage::disk('public')->exists($image->image_path)) {
+            Storage::disk('public')->delete($image->image_path);
+        }
+        
+        $image->delete(); 
+    }
+    
+    
+    $apartment->delete(); 
+
+    return response()->json(['message' => 'The Apartment Deleted Successfully'], 200);
+}
     // fillter
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
