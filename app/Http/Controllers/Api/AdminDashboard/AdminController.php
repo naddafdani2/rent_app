@@ -93,4 +93,27 @@ class AdminController extends Controller
             }       
 }
     }
+
+
+    public function adminApartmentsIndex()
+{
+    $apartments = Apartment::with('images', 'owner')->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $apartments
+    ], 200);
+}
+
+public function AdminUsersIndex()
+{
+    
+    $users = User::latest()->get();
+
+    return response()->json([
+        'success' => true,
+        'count'   => $users->count(),
+        'data'    => $users
+    ], 200);
+}
 }

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->middleware('auth:sanctum')->group(function(){
    Route::post('/apartments/{apartmentId}/conditions',[AdminController::class,'apartmentsConditions']);
    Route::post('/Users/{userId}/conditions',[AdminController::class,'usersConditions']); 
+   Route::get('/apartments/all',[AdminController::class,'adminApartmentsIndex']);
+   Route::get('/users/all',[AdminController::class,'adminUsersIndex']);
 });
 
 //==============================================================================================================
