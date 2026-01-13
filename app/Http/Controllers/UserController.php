@@ -35,6 +35,9 @@ class UserController extends Controller
             'password' => 'sometimes|string|min:8'
         ]);
 
+        // store the user's photos in a specific folder (app/public/...)
+        // and save their(photos) names in user record at the database
+
         if ($request->hasFile('personal_photo')) {
 
             if ($user->personal_photo) {
@@ -59,10 +62,6 @@ class UserController extends Controller
             $file->storeAs("id_photos", $filename, "public");
         
             $fields['id_photo'] = $filename;
-        }
-
-        if (isset($fields['password'])) {
-            $fields['password'] = Hash::make($fields['password']);
         }
 
         $user->update($fields);

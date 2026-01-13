@@ -18,11 +18,12 @@ return new class extends Migration
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('personal_photo');
-            $table->string('id_photo');
+            $table->string('personal_photo')->default(" ");
+            $table->string('id_photo')->default(" ");
             $table->date('birth_date');
             $table->string('phone',10)->unique();
             $table->boolean('is_approved')->default(false);
+            $table->enum('role', ['user','admin'])->default('user');
             $table->rememberToken();
             $table->timestamps();
         });
