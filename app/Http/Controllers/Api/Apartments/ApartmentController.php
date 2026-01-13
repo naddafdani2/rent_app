@@ -30,7 +30,8 @@ class ApartmentController extends Controller
 
     public function show($id)
     {
-        $apartment = Apartment::with('images', 'owner')->findOrFail($id);
+        $apartment = Apartment::where('is_available', true)
+        ->with('images', 'owner')->findOrFail($id);
 
         return response()->json([$apartment, 200]);
     }
@@ -145,14 +146,20 @@ public function update(Request $request, $id)
         
         
         // To Delete Existing Photos
-        if ($request->filled('delete_ids')) {
-            $imagesToDelete = $apartment->images()->whereIn('id', $request->delete_ids)->get();
+       if ($request->filled('delete_ids')) {
+        $imagesToDelete = $apartment->images()->whereIn('id', $request->delete_ids)->get();
 
-            foreach ($imagesToDelete as $image) {
+        foreach ($imagesToDelete as $image) {
+            
+        
+            if (Storage::disk('public')->exists($image->image_path)) {
                 Storage::disk('public')->delete($image->image_path);
-                $image->delete();
             }
+            
+            
+            $image->delete(); 
         }
+    }
 
 
         // To Add New Photos
@@ -188,7 +195,8 @@ public function update(Request $request, $id)
 
     // delete apartment
     /////////////////////////////////////////////////////////////////////////////////////////////////
-public function destroy($id)
+
+    public function destroy($id)
     {
          $user = Auth::user();
         if (!$user->is_approved) {
