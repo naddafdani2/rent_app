@@ -18,7 +18,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         return response()->json([
-            'user' => $user
+            'user' => $user#
         ]);
     }
 
@@ -43,11 +43,11 @@ class UserController extends Controller
             if ($user->personal_photo) {
                 Storage::disk('public')->delete("personal_photos/$user->personal_photo");
                 }
-        
+
             $file = $request->file('personal_photo');
             $filename = "user_{$user->id}_" . time() . "." . $file->extension();
             $file->storeAs("personal_photos", $filename, "public");
-        
+
             $fields['personal_photo'] = $filename;
         }
 
@@ -56,16 +56,16 @@ class UserController extends Controller
             if ($user->id_photo) {
                 Storage::disk('public')->delete("id_photos/$user->id_photo");
                 }
-        
+
             $file = $request->file('id_photo');
             $filename = "user_{$user->id}_" . time() . "." . $file->extension();
             $file->storeAs("id_photos", $filename, "public");
-        
+
             $fields['id_photo'] = $filename;
         }
 
         $user->update($fields);
-    
+
         return $user;
     }
 
