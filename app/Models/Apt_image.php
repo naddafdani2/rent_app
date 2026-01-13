@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory; 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
 class Apt_image extends Model
 {
+    use HasFactory;
+       
     protected $fillable = [
         'image_path',
         'is_primary',

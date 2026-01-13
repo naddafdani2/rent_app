@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('birth_date');
             $table->string('phone',10)->unique();
             $table->boolean('is_approved')->default(false);
+            $table->enum('role', ['user','admin'])->default('user');
             $table->rememberToken();
             $table->timestamps();
         });

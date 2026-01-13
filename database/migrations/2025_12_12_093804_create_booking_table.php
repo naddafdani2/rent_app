@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('booking', function (Blueprint $table) {
+        Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->date('start_date');
             $table->date('end_date');
-            $table->enum('status',['accepted','modified','cancelled'])->default('accepted');
+            $table->enum('status',['accepted','modified','cancelled', 'pending'])->default('accepted');
             $table->foreignId('user_id')->constrained('users')
             ->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('apartments_id')->constrained('apartments')

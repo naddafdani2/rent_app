@@ -61,35 +61,42 @@ class BookingController extends Controller
     public function create(Request $request)
     {
        $user = $request->user();
+       if ($user->is_approved === true)
+        {
 
-       $fields=$request->validate([
-                'apartment_id' => 'required|exists:apartments,id',
-                'start_date'=>'required|date',
-                'end_date'=>'required|date'
-       ]);
-
-        $isAvailable = $this->checkDateAvailability(
-        $fields['apartment_id'], 
-        $fields['start_date'], 
-        $fields['end_date']);
-
-        if (!$isAvailable) {
-            return response()->json([
-                'message' => 'The apartment is already booked for these dates , please choose different dates'
+            $fields=$request->validate([
+                    'apartment_id' => 'required|exists:apartments,id',
+                    'start_date'=>'required|date',
+                    'end_date'=>'required|date'
             ]);
-        }
 
-       $booking=Booking::create([
+            $isAvailable = $this->checkDateAvailability(
+            $fields['apartment_id'], 
+            $fields['start_date'], 
+            $fields['end_date']);
+
+            if (!$isAvailable) {
+                return response()->json([
+                    'message' => 'The apartment is already booked for these dates , please choose different dates'
+                ]);
+            }
+
+            $booking=Booking::create([
                 'start_date'=>$fields['start_date'],
                 'end_date'=>$fields['end_date'],
                 'user_id'=>$user->id,
                 'apartment_id'=>$fields['apartment_id'] 
-       ]);
+            ]);
 
-       return response()->json([
-            'booking' => $booking
-       ]);
-    }
+            return response()->json([
+                    'booking' => $booking
+                ]);
+        }
+        else
+        return response()->json([
+                'message'=>'Your account has not been approved yet'
+            ]);
+        }
 
     public function update(Request $request, $id)
     {
