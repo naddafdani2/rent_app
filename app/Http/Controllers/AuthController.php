@@ -45,39 +45,44 @@ class AuthController extends Controller
         $file = $request->file('id_photo');
         $filename = "user_{$user->id}_" . time() . "." . $file->extension();
         $file->storeAs("id_photos", $filename, "public");
-        
+
         $fields['id_photo'] = $filename;
 
 
         $token = $user->createToken($request->first_name);
-        
+
         app(UserController::class)->update($request,$user);
-     
+
          return response($token->plainTextToken);
 
         }
 
 
-        
+
     public function login(Request $request){
-            
+
             $request->validate([
                 'phone' => 'required|string|max:20|exists:users',
                 'email' => 'nullable|email|exists:users',
                 'password' => 'required|string|min:8'
             ]);
-            
+
             //search if the email is exist and the password is correct
-            
-            $user=User::where('email',$request->email)->first();
-            
+
+            $user=User::where('phone',$request->phone)->first();
+
             if(!$user | !Hash::check($request->password,$user->password)){
-                return "the password is incorrect";
+                return response()->json([
+            'message' => 'Invalid credentials'
+        ], 401);
             }
 
             $token = $user->createToken($user->first_name);
-            
-            return response($token->plainTextToken);
+
+            return response([
+                'user' => $user,
+                'token' => $token->plainTextToken
+         ]);
 
     }
 
@@ -86,7 +91,7 @@ class AuthController extends Controller
     public function logout(Request $request){
 
         $request->user()->tokens()->delete();
-        
+
         return "you are logged out";
 
     }
