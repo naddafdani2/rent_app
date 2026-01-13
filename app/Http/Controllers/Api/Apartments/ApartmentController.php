@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Apartments;
 
 use App\Http\Controllers\Controller;
 use App\Models\Apartment;
+use App\Models\User;
 use App\Models\Apt_image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -262,5 +263,21 @@ public function update(Request $request, $id)
         $apartments = $query->with('images', 'owner')->get();
 
         return response()->json([$apartments, 200]);
+    }
+
+    
+     //get Auth User Apartments
+
+    public function getUserApartments()
+   {
+    $user =User::where('id',Auth::id())->first();
+
+    $apartments = $user->apartments()->with('images')->latest()->get();
+
+    return response()->json([
+        'success' => true,
+        'count'   => $apartments->count(),
+        'data'    => $apartments
+    ], 200);
     }
 }

@@ -21,6 +21,8 @@ Route::prefix('apartments')->middleware('auth:sanctum')->group(function () {
     Route::post('/update/{id}', [ApartmentController::class, 'update']);
     
     Route::delete('/delete/{id}', [ApartmentController::class, 'destroy']);
+
+    Route::get('/my-apartments', [ApartmentController::class, 'getUserApartments']);
 });
 
 
