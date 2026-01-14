@@ -55,4 +55,10 @@ class Apartment extends Model
     {
         return $this->belongsToMany(User::class, 'ratings', 'apartment_id', 'user_id')->withPivot('rate', 'comment');
     }
+
+public function pureRatings()
+{
+    return $this->hasMany(Rating::class, 'apartment_id');
+}
+    
 }

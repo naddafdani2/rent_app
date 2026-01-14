@@ -51,5 +51,7 @@ Route::prefix('rating')->middleware('auth:sanctum')->group(function () {
     Route::delete('/remove', [RatingController::class, 'destroyRating']);
     
     Route::post('/update', [RatingController::class, 'updateRating']);
-    
-});
+     
+    Route::get('/AllaverageRating', [RatingController::class, 'getApartmentsAverageRating']);
+Route::post('/averageRating/{apartment_id}', [RatingController::class, 'getSingleApartmentRating']);
+    });

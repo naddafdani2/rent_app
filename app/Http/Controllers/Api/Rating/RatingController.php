@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Rating;
 
 use App\Http\Controllers\Controller;
+use App\Models\Apartment;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -91,4 +92,33 @@ $newRating = $user->ratings()->where('apartment_id', $request->apartment_id)->fi
 
     }
 
+
+public function getApartmentsAverageRating()
+{
+    $apartments = Apartment::where('is_available', true)
+        ->withAvg('pureRatings as average_rating', 'rating') 
+        ->with('images') 
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $apartments
+    ], 200);
+}
+
+public function getSingleApartmentRating($id)
+{
+        $apartment = Apartment::withAvg('pureRatings as average_rating', 'rating')
+        ->withCount('pureRatings as total_reviews')
+        ->findOrFail($id);
+
+    return response()->json([
+        'success' => true,
+        'data' => [
+            'apartment_id'   => $apartment->id,
+            'average_rating' => round($apartment->average_rating, 1), // تقريب النتيجة لرقم عشري واحد
+          
+        ]
+    ], 200);
+}
 }
