@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory; 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
@@ -11,7 +11,10 @@ class Booking extends Model
 
     protected $fillable = [
         'start_date',
-        'end_date'
+        'end_date',
+        'user_id',
+        'apartments_id',
+        'status'
     ];
 
     public function user()
@@ -20,6 +23,6 @@ class Booking extends Model
     }
     public function apartment()
     {
-        return $this->belongsTo(Apartment::class,'apartment_id');
+        return $this->belongsTo(Apartment::class,'apartments_id');
     }
 }
